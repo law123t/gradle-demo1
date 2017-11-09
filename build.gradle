@@ -1,0 +1,91 @@
+//simpler DSL notation, for packaging and is the same as MAVEN Project group id
+group 'madjava'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+defaultTasks 'clean', 'compileJava', 'iveBeenBuilt',/**, 'runThisAndExtraProcess'//, 'runLogicalTask'**/ 'run'
+
+
+//one way to sequence tasks
+task iveBeenBuilt (dependsOn : 'compileJava') {
+   doLast { println 'been built, now to launch' }
+}
+
+
+//another way to sequence tasks without having to declare
+/**
+task firstBuildProcess {
+    doLast { println 'Startup of demo process' }
+}
+
+task extraBuildProcess (dependsOn : 'firstBuildProcess') {
+    doLast { println 'background process to be done' }
+}
+
+// this allows for multiple tasks to be run via one task with a dependsOn hierarchy
+task runThisAndExtraProcess (dependsOn : ['iveBeenBuilt', 'extraBuildProcess']) {
+    doLast { println 'Background processs run with this task as well' }
+}
+
+
+//A cool and interesting way to deal with builds
+
+/**
+String thisTask
+
+task optionalDependency1 {
+    doLast { thisTask = 'its past 1! run this dependency.' }
+}
+
+task optionalDependency2 {
+    doLast { thisTask = 'different task run! not past 1'}
+}
+
+task mandatoryTask {
+    doFirst { println 'determining time for dependency' }
+    doLast {println thisTask}
+}
+
+task runLogicalTask (dependsOn : 'mandatoryTask') {
+    doLast {println 'running Logical Task' }
+}
+
+int currentTime = getTime()
+
+int getTime() {
+    int currentHour
+    Date date = new Date()
+    Calendar calendar = GregorianCalendar.getInstance()
+    calendar.setTime(date)
+    currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+
+    return currentHour
+}
+
+if (currentTime > 13) {
+    mandatoryTask.dependsOn 'optionalDependency1'
+} else {
+    mandatoryTask.dependsOn 'optionalDependency2'
+}
+
+**/
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main.java.srcDir 'src/main'
+    test.java.srcDir 'src/test'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+
+}
+
+mainClassName = 'HelloWorld'
