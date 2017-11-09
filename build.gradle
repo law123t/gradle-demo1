@@ -7,8 +7,8 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.8
 
-defaultTasks 'clean', 'compileJava', 'iveBeenBuilt',/**, 'runThisAndExtraProcess'//, 'runLogicalTask'**/ 'run'
-
+defaultTasks 'clean', 'compileJava', 'iveBeenBuilt', 'runLogicalTask', 'run'
+//, 'runLogicalTask'
 
 //one way to sequence tasks
 task iveBeenBuilt (dependsOn : 'compileJava') {
@@ -30,11 +30,11 @@ task extraBuildProcess (dependsOn : 'firstBuildProcess') {
 task runThisAndExtraProcess (dependsOn : ['iveBeenBuilt', 'extraBuildProcess']) {
     doLast { println 'Background processs run with this task as well' }
 }
-
+**/
 
 //A cool and interesting way to deal with builds
 
-/**
+
 String thisTask
 
 task optionalDependency1 {
@@ -72,7 +72,7 @@ if (currentTime > 13) {
     mandatoryTask.dependsOn 'optionalDependency2'
 }
 
-**/
+
 repositories {
     mavenCentral()
 }
@@ -80,12 +80,13 @@ repositories {
 sourceSets {
     main.java.srcDir 'src/main'
     test.java.srcDir 'src/test'
-}
+} 
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
-
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.9.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.1'
+    compile group: 'log4j', name: 'log4j', version:'1.2.7'
 }
 
 mainClassName = 'HelloWorld'
